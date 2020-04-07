@@ -15,7 +15,7 @@ type Config struct {
 	APIKey string `yaml:"apiKey"`
 }
 
-// ParseFromFile parses the input io.Reader into a Config.
+// Parse parses the input io.Reader into a Config.
 // Returns an error if any.
 func Parse(r io.Reader) (Config, error) {
 	data, err := ioutil.ReadAll(r)

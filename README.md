@@ -1,3 +1,4 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/indiependente/go-stock)](https://goreportcard.com/report/github.com/indiependente/go-stock)
 # go-stock
 A stock price viewer written in Go.
 

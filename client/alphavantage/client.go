@@ -28,7 +28,7 @@ type Caller interface {
 type Client struct {
 	// Doer is an implementation of the Doer interface
 	Doer Doer
-	// URL is teh URL to send requests to.
+	// URL is the URL to send requests to.
 	URL string
 	// APIKey is the key that API requires to identify the user.
 	APIKey string
