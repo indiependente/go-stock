@@ -34,7 +34,7 @@ func run(log logger.Logger) error {
 	avClient := alphavantage.Client{
 		Doer:   c,
 		URL:    conf.URL,
-		ApiKey: conf.APIKey,
+		APIKey: conf.APIKey,
 	}
 	ctx := context.Background()
 	gqr, err := avClient.GlobalQuote(ctx, *sym)

@@ -1,5 +1,6 @@
 package alphavantage
 
+// GlobalQuote represents the information about a gloal quote.
 type GlobalQuote struct {
 	Symbol           string `json:"01. symbol"`
 	Open             string `json:"02. open"`
