@@ -14,13 +14,13 @@ import (
 
 func main() {
 	log := logger.GetConsoleLogger("go-stock", logger.INFO)
-	err := run(log)
+	err := run()
 	if err != nil {
 		log.Fatal("Stop execution", err)
 	}
 }
 
-func run(log logger.Logger) error {
+func run() error {
 	configFile := kingpin.Flag("config", "Configuration file location").Short('c').
 		Default("config.yml").String()
 	sym := kingpin.Arg("symbol", "Stock symbol").Required().String()
@@ -46,6 +46,9 @@ func run(log logger.Logger) error {
 	if err != nil {
 		return fmt.Errorf("could not get monthly time series: %w", err)
 	}
-	ui.HandleData(*sym, gq.GlobalQuote.Quote().Price, mts.Series.TimeSeries())
+	err = ui.HandleData(gq.GlobalQuote.Symbol, gq.GlobalQuote.Quote().Price, mts.Series.TimeSeries())
+	if err != nil {
+		return fmt.Errorf("could not visualise data: %w", err)
+	}
 	return nil
 }

@@ -16,11 +16,11 @@ type TimeSeries struct {
 	Points []Quote
 }
 
-// Price returns the price data points of the time series.
-func (ts TimeSeries) Price() []float64 {
+// High returns the high data points of the time series.
+func (ts TimeSeries) High() []float64 {
 	data := []float64{}
 	for _, q := range ts.Points {
-		data = append(data, q.Price)
+		data = append(data, q.High)
 	}
 	return data
 }

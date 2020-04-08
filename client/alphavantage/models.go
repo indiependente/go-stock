@@ -45,8 +45,34 @@ func (gq GlobalQuote) Quote() models.Quote {
 	return q
 }
 
+// SeriesQuote represents a point in a time series.
+type SeriesQuote struct {
+	Open   string `json:"1. open"`
+	High   string `json:"2. high"`
+	Low    string `json:"3. low"`
+	Close  string `json:"4. close"`
+	Volume string `json:"5. volume"`
+}
+
+// Quote converts a GlobalQuote into a generic Quote.
+func (gq SeriesQuote) Quote() models.Quote {
+	q := models.Quote{}
+	o, _ := strconv.ParseFloat(gq.Open, 64)
+	q.Open = o
+	h, _ := strconv.ParseFloat(gq.High, 64)
+	q.High = h
+	l, _ := strconv.ParseFloat(gq.Low, 64)
+	q.Low = l
+	c, _ := strconv.ParseFloat(gq.Close, 64)
+	q.Volume = c
+	v, _ := strconv.ParseFloat(gq.Volume, 64)
+	q.Volume = v
+
+	return q
+}
+
 // TimeSeries is a Alpha Vantage time series.
-type TimeSeries map[string]GlobalQuote
+type TimeSeries map[string]SeriesQuote
 
 // TimeSeries represents weekly stock data for the quote over the last 20 years.
 type WeeklyTimeSeries struct {

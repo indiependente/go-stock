@@ -16,12 +16,13 @@ func HandleData(symbol string, currentPrice float64, ts models.TimeSeries) error
 		return fmt.Errorf("failed to initialize termui: %w", err)
 	}
 	defer ui.Close()
-	data := ts.Price()
+	data := ts.High()
 	lendata := len(data)
 	if lendata != len(ts.Labels) {
 		return errors.New("num labels mismatches data points")
 	}
 	lbls := ts.Labels[lendata-numPoints:]
+	data = data[lendata-numPoints:]
 	p := widgets.NewParagraph()
 	p.Title = fmt.Sprintf("Stock Price for %s", symbol)
 	p.Text = strconv.FormatFloat(currentPrice, 'f', -1, 64)
@@ -35,7 +36,7 @@ func HandleData(symbol string, currentPrice float64, ts models.TimeSeries) error
 	bc.Labels = lbls
 	bc.BarColors[0] = ui.ColorGreen
 	bc.NumStyles[0] = ui.NewStyle(ui.ColorBlack)
-	bc.Data = data[lendata-numPoints:]
+	bc.Data = data
 	ui.Render(p, bc)
 
 	uiEvents := ui.PollEvents()
