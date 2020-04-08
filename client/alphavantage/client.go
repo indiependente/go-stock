@@ -41,7 +41,7 @@ type Client struct {
 // GlobalQuote returns quotes information about the input symbol.
 // Returns an error if any.
 func (c Client) GlobalQuote(ctx context.Context, symbol string) (GlobalQuoteResponse, error) {
-	url := fmt.Sprintf(urlTemplate, "GLOBAL_QUOTE", c.URL, symbol, c.APIKey)
+	url := fmt.Sprintf(urlTemplate, c.URL, "GLOBAL_QUOTE", symbol, c.APIKey)
 
 	data, err := c.get(ctx, url)
 	if err != nil {
@@ -60,7 +60,7 @@ func (c Client) GlobalQuote(ctx context.Context, symbol string) (GlobalQuoteResp
 // WeeklyTimeSeries returns weekly time series for the input symbol for the last 20 years.
 // Returns an error if any.
 func (c Client) WeeklyTimeSeries(ctx context.Context, symbol string) (WeeklyTimeSeries, error) {
-	url := fmt.Sprintf(urlTemplate, "TIME_SERIES_WEEKLY", c.URL, symbol, c.APIKey)
+	url := fmt.Sprintf(urlTemplate, c.URL, "TIME_SERIES_WEEKLY", symbol, c.APIKey)
 
 	data, err := c.get(ctx, url)
 	if err != nil {
@@ -74,6 +74,25 @@ func (c Client) WeeklyTimeSeries(ctx context.Context, symbol string) (WeeklyTime
 	}
 
 	return wts, nil
+}
+
+// MonthlyTimeSeries returns monthly time series for the input symbol for the last 20 years.
+// Returns an error if any.
+func (c Client) MonthlyTimeSeries(ctx context.Context, symbol string) (MonthlyTimeSeries, error) {
+	url := fmt.Sprintf(urlTemplate, c.URL, "TIME_SERIES_MONTHLY", symbol, c.APIKey)
+
+	data, err := c.get(ctx, url)
+	if err != nil {
+		return MonthlyTimeSeries{}, fmt.Errorf("could not get monthly time series: %w", err)
+	}
+
+	var mts MonthlyTimeSeries
+	err = json.Unmarshal(data, &mts)
+	if err != nil {
+		return MonthlyTimeSeries{}, fmt.Errorf("could not unmarshal response: %w", err)
+	}
+
+	return mts, nil
 }
 
 func (c Client) get(ctx context.Context, url string) ([]byte, error) {

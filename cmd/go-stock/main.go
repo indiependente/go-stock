@@ -6,6 +6,7 @@ import (
 
 	"github.com/indiependente/go-stock/client/alphavantage"
 	"github.com/indiependente/go-stock/config"
+	"github.com/indiependente/go-stock/ui"
 	"github.com/indiependente/pkg/http/client"
 	"github.com/indiependente/pkg/logger"
 	"gopkg.in/alecthomas/kingpin.v2"
@@ -37,10 +38,14 @@ func run(log logger.Logger) error {
 		APIKey: conf.APIKey,
 	}
 	ctx := context.Background()
-	gqr, err := avClient.GlobalQuote(ctx, *sym)
+	gq, err := avClient.GlobalQuote(ctx, *sym)
 	if err != nil {
 		return fmt.Errorf("could not get global quote: %w", err)
 	}
-	log.Info("Price = " + gqr.GlobalQuote.Price)
+	mts, err := avClient.MonthlyTimeSeries(ctx, *sym)
+	if err != nil {
+		return fmt.Errorf("could not get monthly time series: %w", err)
+	}
+	ui.HandleData(*sym, gq.GlobalQuote.Quote().Price, mts.Series.TimeSeries())
 	return nil
 }
