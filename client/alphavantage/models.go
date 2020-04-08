@@ -1,6 +1,7 @@
 package alphavantage
 
 import (
+	"sort"
 	"strconv"
 
 	"github.com/indiependente/go-stock/models"
@@ -96,5 +97,6 @@ func (ts TimeSeries) TimeSeries() models.TimeSeries {
 		t.Labels = append(t.Labels, k)
 		t.Points = append(t.Points, v.Quote())
 	}
+	sort.Sort(t)
 	return t
 }
