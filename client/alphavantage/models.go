@@ -1,5 +1,13 @@
 package alphavantage
 
+// MetaData related to a quote request.
+type MetaData struct {
+	Information   string `json:"1. Information"`
+	Symbol        string `json:"2. Symbol"`
+	LastRefreshed string `json:"3. Last Refreshed"`
+	TimeZone      string `json:"4. Time Zone"`
+}
+
 // GlobalQuote represents the information about a global quote.
 type GlobalQuote struct {
 	Symbol           string `json:"01. symbol"`
@@ -12,4 +20,10 @@ type GlobalQuote struct {
 	PreviousClose    string `json:"08. previous close"`
 	Change           string `json:"09. change"`
 	ChangePercent    string `json:"10. change percent"`
+}
+
+// TimeSeries represents a series of stock data for the quote.
+type WeeklyTimeSeries struct {
+	MetaData MetaData               `json:"Meta Data"`
+	Series   map[string]GlobalQuote `json:"Weekly Time Series"`
 }
