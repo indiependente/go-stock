@@ -40,3 +40,22 @@ func ParseFromFile(filename string) (Config, error) {
 	defer f.Close() // nolint: errcheck
 	return Parse(f)
 }
+
+// Save persists the configuration c in the location pointed by filename.
+// Returns an error if any.
+func Save(c Config, filename string) error {
+	f, err := os.Create(filename)
+	if err != nil {
+		return fmt.Errorf("could not create file: %w", err)
+	}
+	defer f.Close()
+	data, err := yaml.Marshal(c)
+	if err != nil {
+		return fmt.Errorf("could not marshal configuration: %w", err)
+	}
+	_, err = f.Write(data)
+	if err != nil {
+		return fmt.Errorf("could not write to file: %w", err)
+	}
+	return nil
+}
